@@ -16,7 +16,6 @@ def apply_color_overlay(image, color):
     g = channels[1].point(lambda color: overlay_effect(color, overlay_green))
     b = channels[2].point(lambda color: overlay_effect(color, overlay_blue))
 
-
     channels[0].paste(r)
     channels[1].paste(g)
     channels[2].paste(b)
@@ -39,16 +38,41 @@ def make_lego_image(thumbnail_image, brick_image):
 
     rgb_image = thumbnail_image.convert('RGB')
 
-    lego_image = Image.new("RGB", (base_width * brick_width,
-                                   base_height * brick_height), "white")
+    lego_image = Image.new("RGB", (base_width * brick_width, base_height * brick_height), "white")
+
+    all_color = []
 
     for brick_x in range(base_width):
         for brick_y in range(base_height):
             color = rgb_image.getpixel((brick_x, brick_y))
-            print(color, end=" ")
             lego_image.paste(apply_color_overlay(brick_image, color),
                              (brick_x * brick_width, brick_y * brick_height))
-        print("\n")
+            all_color.append(color)
+            print(color, end=" ")
+
+        print("")
+
+    block_list = {};
+    for color in all_color:
+        if block_list.get(color) == None:
+            block_list[color] = 1
+        else:
+            block_list[color] = block_list.get(color) + 1
+
+    palette = palettes.pxmaster
+    total_block = 0
+
+    for palette_key, palette_value in palette.items():
+        for block_key, block_value in block_list.items():
+            if list(block_key) == palette_value:
+                total_block = total_block + block_value
+                block_list[palette_key] = block_list.pop(block_key)
+                break
+
+    print("size : ", base_height, " * ", base_width)
+    print("total block : ", total_block)
+    print("block list : ", block_list)
+
     return lego_image
 
 
@@ -85,16 +109,15 @@ def get_lego_palette(palette_mode):
     '''Gets the palette for the specified lego palette mode'''
     legos = palettes.legos()
     palette = legos[palette_mode]
-    return palettes.extend_palette(palette)
+    return palette
+    # return palettes.extend_palette(palette)
 
 
 def apply_thumbnail_effects(image, palette, dither):
     '''Apply effects on the reduced image before Legofying'''
     palette_image = Image.new("P", (1, 1))
     palette_image.putpalette(palette)
-    return image.im.convert("P",
-                        Image.FLOYDSTEINBERG if dither else Image.NONE,
-                        palette_image.im)
+    return image.im.convert("P", Image.FLOYDSTEINBERG if dither else Image.NONE, palette_image.im)
 
 def legofy_image(base_image, brick_image, output_path, size, palette_mode, dither):
     '''Legofy an image'''
@@ -142,7 +165,7 @@ def main(image_path, output_path=None, size=None,
     print("Finished!")
 
 if __name__ == '__main__':
-    main("../assets/images/11.png", size= 200, palette_mode= 'temp')
+    main("../assets/images/33.jpeg", size= 100, palette_mode= 'px-master')
 
 # main("../assets/images/11.png", size= 200, palette_mode='mono')
-# mono, solid, transparent, effects, all
+# mono, solid, transparent, effects, all + px-master![](../assets/images/22_leg1o.png)
