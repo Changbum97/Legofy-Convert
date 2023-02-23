@@ -82,7 +82,7 @@ def get_new_filename(file_path, ext_override=None):
     base, extention = os.path.splitext(basename)
     if ext_override:
         extention = ext_override
-    new_filename = os.path.join(folder, "{0}_leg1o{1}".format(base, extention))
+    new_filename = os.path.join(folder, "{0}_lego{1}".format(base, extention))
     return new_filename
 
 
@@ -165,7 +165,7 @@ def main(image_path, output_path=None, size=None,
     print("Finished!")
 
 if __name__ == '__main__':
-    main("../assets/images/33.jpeg", size= 100, palette_mode= 'px-master')
+    main("../assets/images/캐릭3.png", size= 50, palette_mode= 'px-master')
 
 # main("../assets/images/11.png", size= 200, palette_mode='mono')
 # mono, solid, transparent, effects, all + px-master![](../assets/images/22_leg1o.png)
