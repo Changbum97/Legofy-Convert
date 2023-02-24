@@ -69,7 +69,7 @@ def make_lego_image(thumbnail_image, brick_image):
                 block_list[palette_key] = block_list.pop(block_key)
                 break
 
-    print("size : ", base_height, " * ", base_width)
+    print("size : ", base_width, " * ", base_height)
     print("total block : ", total_block)
     print("block list : ", block_list)
 
@@ -165,7 +165,7 @@ def main(image_path, output_path=None, size=None,
     print("Finished!")
 
 if __name__ == '__main__':
-    main("../assets/images/캐릭3.png", size= 50, palette_mode= 'px-master')
+    main("../assets/images/광섭.jpeg", size= 50, palette_mode= 'px-master')
 
 # main("../assets/images/11.png", size= 200, palette_mode='mono')
 # mono, solid, transparent, effects, all + px-master![](../assets/images/22_leg1o.png)
