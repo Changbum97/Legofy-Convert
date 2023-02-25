@@ -165,7 +165,7 @@ def main(image_path, output_path=None, size=None,
     print("Finished!")
 
 if __name__ == '__main__':
-    main("../assets/images/광섭.jpeg", size= 50, palette_mode= 'px-master')
+    main("../assets/images/계단.png", size= 50, palette_mode= 'px-master')
 
 # main("../assets/images/11.png", size= 200, palette_mode='mono')
 # mono, solid, transparent, effects, all + px-master![](../assets/images/22_leg1o.png)
