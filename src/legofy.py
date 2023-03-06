@@ -31,7 +31,7 @@ def overlay_effect(color, overlay):
     else:
         return overlay - 133 + color
 
-def make_lego_image(thumbnail_image, brick_image):
+def make_lego_image(thumbnail_image, brick_image, size):
     '''Create a lego version of an image from an image'''
     base_width, base_height = thumbnail_image.size
     brick_width, brick_height = brick_image.size
@@ -40,19 +40,21 @@ def make_lego_image(thumbnail_image, brick_image):
 
     lego_image = Image.new("RGB", (base_width * brick_width, base_height * brick_height), "white")
 
-    all_color = []
+#    all_color = []
+    arr = [[0 for j in range(size)] for i in range(size)]
 
     for brick_x in range(base_width):
         for brick_y in range(base_height):
             color = rgb_image.getpixel((brick_x, brick_y))
             lego_image.paste(apply_color_overlay(brick_image, color),
                              (brick_x * brick_width, brick_y * brick_height))
-            all_color.append(color)
-            print(color, end=" ")
+            #all_color.append(color)
+            arr[brick_x][brick_y] = color
 
-        print("")
+    return arr
+#    return all_color
 
-    block_list = {};
+'''    block_list = {};
     for color in all_color:
         if block_list.get(color) == None:
             block_list[color] = 1
@@ -73,7 +75,7 @@ def make_lego_image(thumbnail_image, brick_image):
     print("total block : ", total_block)
     print("block list : ", block_list)
 
-    return lego_image
+    return lego_image'''
 
 
 def get_new_filename(file_path, ext_override=None):
@@ -127,7 +129,7 @@ def legofy_image(base_image, brick_image, output_path, size, palette_mode, dithe
     if palette_mode:
         palette = get_lego_palette(palette_mode)
         base_image = apply_thumbnail_effects(base_image, palette, dither)
-    make_lego_image(base_image, brick_image).save(output_path)
+    return make_lego_image(base_image, brick_image, size)
 
 
 def main(image_path, output_path=None, size=None,
@@ -158,14 +160,17 @@ def main(image_path, output_path=None, size=None,
     if output_path is None:
         output_path = get_new_filename(image_path, '.png')
     print("Static image detected, will now legofy to {0}".format(output_path))
-    legofy_image(base_image, brick_image, output_path, size, palette_mode, dither)
+
+    result = legofy_image(base_image, brick_image, output_path, size, palette_mode, dither)
 
     base_image.close()
     brick_image.close()
     print("Finished!")
 
+    return result
+
 if __name__ == '__main__':
-    main("../assets/images/주먹밥.jpeg", size= 100, palette_mode= 'px-master')
+    main("../assets/images/주먹밥.jpeg", size= 3, palette_mode= 'px-master')
 
 # main("../assets/images/11.png", size= 200, palette_mode='mono')
 # mono, solid, transparent, effects, all + px-master![](../assets/images/22_leg1o.png)
