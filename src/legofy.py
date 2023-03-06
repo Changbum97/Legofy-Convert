@@ -51,6 +51,8 @@ def make_lego_image(thumbnail_image, brick_image, size):
             #all_color.append(color)
             arr[brick_x][brick_y] = color
 
+    print("size : ", base_width, "*", base_height)
+
     return arr
 #    return all_color
 
@@ -132,8 +134,7 @@ def legofy_image(base_image, brick_image, output_path, size, palette_mode, dithe
     return make_lego_image(base_image, brick_image, size)
 
 
-def main(image_path, output_path=None, size=None,
-         palette_mode=None, dither=False):
+def main(image_path, output_path=None, size=None, palette_mode=None, dither=False):
 
     print("start main")
 
