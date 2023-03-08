@@ -1,7 +1,10 @@
 import legofy
 import os
+import uuid
 from flask import Flask, request
 from flask_cors import CORS
+
+from src import palettes
 
 app = Flask(__name__)
 CORS(app, resources={r'*': {'origins': '*'}})
@@ -9,18 +12,18 @@ CORS(app, resources={r'*': {'origins': '*'}})
 @app.route('/convert', methods=['POST', 'GET'])
 def convert():
     print("==========start==========")
-    print(request.form)
-    print(request.files)
     file = request.files.get('imageFile', False)
-    filename = file.filename
-    file.save(filename)
-
     size = int(request.form['size'])
 
-    result = legofy.main(filename, size= size, palette_mode= 'px-master')
+    ext = os.path.splitext(file.filename)[1]
+    uuid_filename = str(uuid.uuid4()) + ext
 
-    if os.path.exists(filename):
-        os.remove(filename)
+    file.save(uuid_filename)
+
+    result = legofy.main(uuid_filename, size= size, palette_mode= 'px-master')
+
+    if os.path.exists(uuid_filename):
+        os.remove(uuid_filename)
     else:
         print("The file does not exist")
 
