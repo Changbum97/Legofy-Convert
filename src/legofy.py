@@ -134,7 +134,7 @@ def legofy_image(base_image, brick_image, output_path, size, palette_mode, dithe
 
 def main(image_path, output_path=None, size=None, palette_mode=None, dither=False):
 
-    print("start main")
+    print("Convert Start")
 
     '''Legofy image with brick_path mask'''
     image_path = os.path.realpath(image_path)
@@ -164,7 +164,7 @@ def main(image_path, output_path=None, size=None, palette_mode=None, dither=Fals
 
     base_image.close()
     brick_image.close()
-    print("Finished!")
+    print("Convert Finish!")
 
     return result
 

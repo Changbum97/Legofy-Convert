@@ -11,11 +11,8 @@ def convert():
     print("==========start==========")
     print(request.form)
     print(request.files)
-    #file = request.files['imageFile']
     file = request.files.get('imageFile', False)
-    print(file)
     filename = file.filename
-    print(filename)
     file.save(filename)
 
     size = int(request.form['size'])
