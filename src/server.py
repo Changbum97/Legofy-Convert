@@ -22,13 +22,15 @@ def convert():
 
     result = legofy.main(uuid_filename, size= size, palette_mode= 'px-master')
 
+    # 변환 끝난 원본 이미지 제거
     if os.path.exists(uuid_filename):
         os.remove(uuid_filename)
     else:
         print("The file does not exist")
 
     print("==========end==========")
-    return result
+    print(result.replace(".png", ""))
+    return result.replace(".png", "")
 
 #    return legofy.main("../assets/images/주먹밥.jpeg", size= 100, palette_mode= 'px-master')
 

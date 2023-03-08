@@ -31,7 +31,7 @@ def overlay_effect(color, overlay):
     else:
         return overlay - 133 + color
 
-def make_lego_image(thumbnail_image, brick_image, size):
+def make_lego_image(thumbnail_image, brick_image, size, output_path):
     '''Create a lego version of an image from an image'''
     base_width, base_height = thumbnail_image.size
     brick_width, brick_height = brick_image.size
@@ -42,49 +42,34 @@ def make_lego_image(thumbnail_image, brick_image, size):
 
     arr = [[0 for j in range(size)] for i in range(size)]
 
+    file = open(output_path.replace(".png", ".txt"), "a")
+
     for brick_x in range(base_width):
         for brick_y in range(base_height):
             color = rgb_image.getpixel((brick_x, brick_y))
             lego_image.paste(apply_color_overlay(brick_image, color),
                              (brick_x * brick_width, brick_y * brick_height))
             arr[brick_x][brick_y] = color
+            file.write(str(color))
+            print(arr[brick_x][brick_y], end="")
+        file.write("\n")
+        print("")
 
     print("size : ", base_width, "*", base_height)
+    file.close()
 
-    return arr
-
-''' 이미지 저장  
-    block_list = {};
-    for color in all_color:
-        if block_list.get(color) == None:
-            block_list[color] = 1
-        else:
-            block_list[color] = block_list.get(color) + 1
-
-    palette = palettes.pxmaster
-    total_block = 0
-
-    for palette_key, palette_value in palette.items():
-        for block_key, block_value in block_list.items():
-            if list(block_key) == palette_value:
-                total_block = total_block + block_value
-                block_list[palette_key] = block_list.pop(block_key)
-                break
-
-    print("size : ", base_width, " * ", base_height)
-    print("total block : ", total_block)
-    print("block list : ", block_list)
-
-    return lego_image'''
+    return lego_image
 
 
 def get_new_filename(file_path, ext_override=None):
     '''Returns the save destination file path'''
     folder, basename = os.path.split(file_path)
+    folder = "/Users/changbum/Documents/Project/brickit/brickit-backend/results"
     base, extention = os.path.splitext(basename)
+
     if ext_override:
         extention = ext_override
-    new_filename = os.path.join(folder, "{0}_lego{1}".format(base, extention))
+    new_filename = os.path.join(folder, "{0}{1}".format(base, extention))
     return new_filename
 
 
@@ -129,7 +114,8 @@ def legofy_image(base_image, brick_image, output_path, size, palette_mode, dithe
     if palette_mode:
         palette = get_lego_palette(palette_mode)
         base_image = apply_thumbnail_effects(base_image, palette, dither)
-    return make_lego_image(base_image, brick_image, size)
+    make_lego_image(base_image, brick_image, size, output_path).save(output_path)
+    return output_path
 
 
 def main(image_path, output_path=None, size=None, palette_mode=None, dither=False):
@@ -166,7 +152,7 @@ def main(image_path, output_path=None, size=None, palette_mode=None, dither=Fals
     brick_image.close()
     print("Convert Finish!")
 
-    return result
+    return os.path.split(result)[1]
 
 if __name__ == '__main__':
     main("../assets/images/주먹밥.jpeg", size= 3, palette_mode= 'px-master')
