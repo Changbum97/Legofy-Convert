@@ -1,14 +1,21 @@
-# pip install flask
 import legofy
 import os
 from flask import Flask, request
-from werkzeug.utils import secure_filename
-app = Flask(__name__)
+from flask_cors import CORS
 
-@app.route('/convert')
+app = Flask(__name__)
+CORS(app, resources={r'*': {'origins': '*'}})
+
+@app.route('/convert', methods=['POST', 'GET'])
 def convert():
-    file = request.files['image']
+    print("==========start==========")
+    print(request.form)
+    print(request.files)
+    #file = request.files['imageFile']
+    file = request.files.get('imageFile', False)
+    print(file)
     filename = file.filename
+    print(filename)
     file.save(filename)
 
     size = int(request.form['size'])
@@ -20,6 +27,7 @@ def convert():
     else:
         print("The file does not exist")
 
+    print("==========end==========")
     return result
 
 #    return legofy.main("../assets/images/주먹밥.jpeg", size= 100, palette_mode= 'px-master')
