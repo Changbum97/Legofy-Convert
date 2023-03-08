@@ -40,7 +40,6 @@ def make_lego_image(thumbnail_image, brick_image, size):
 
     lego_image = Image.new("RGB", (base_width * brick_width, base_height * brick_height), "white")
 
-#    all_color = []
     arr = [[0 for j in range(size)] for i in range(size)]
 
     for brick_x in range(base_width):
@@ -48,15 +47,14 @@ def make_lego_image(thumbnail_image, brick_image, size):
             color = rgb_image.getpixel((brick_x, brick_y))
             lego_image.paste(apply_color_overlay(brick_image, color),
                              (brick_x * brick_width, brick_y * brick_height))
-            #all_color.append(color)
             arr[brick_x][brick_y] = color
 
     print("size : ", base_width, "*", base_height)
 
     return arr
-#    return all_color
 
-'''    block_list = {};
+''' 이미지 저장  
+    block_list = {};
     for color in all_color:
         if block_list.get(color) == None:
             block_list[color] = 1
