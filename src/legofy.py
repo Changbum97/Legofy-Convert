@@ -50,10 +50,8 @@ def make_lego_image(thumbnail_image, brick_image, size, output_path):
             lego_image.paste(apply_color_overlay(brick_image, color),
                              (brick_x * brick_width, brick_y * brick_height))
             arr[brick_x][brick_y] = color
-            file.write(str(color))
-            print(arr[brick_x][brick_y], end="")
+            file.write(str(color) + " ")
         file.write("\n")
-        print("")
 
     print("size : ", base_width, "*", base_height)
     file.close()
